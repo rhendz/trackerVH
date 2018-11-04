@@ -12,7 +12,7 @@ def form():
         f = request.get_json()
 
         URL_USDA_REQUEST = 'https://api.nal.usda.gov/ndb/list?',
-        + 'format=json&lt={f}&sort=1&api_key='.format(f[1]) + DEMO_KEY
+        + 'format=json&lt={}&sort=1&api_key='.format(f[1]) + DEMO_KEY
 
         usda_data = urllib.request.urlopen(URL_USDA_REQUEST).read()
 
