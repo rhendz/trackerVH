@@ -1,7 +1,6 @@
 import urllib.request
 import json
 from flask import Flask, render_template, request
-from google.cloud import datastore
 
 APP_ID = '5cf1fbde'
 API_KEY = 'a1e424815db07a8297e670403ca00a9e'
