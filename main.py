@@ -13,8 +13,8 @@ def create_client(project_id):
     return datastore.Client(project_id)
 
 
-def add_task(client, dateTime, fdata):
-    key = client.key(dateTime)
+def add_task(client, fdata):
+    key = client.key(fdata['dateTime'])
 
     task = datastore.Entity(
         key, exclude_from_indexes=['dateTime'])
