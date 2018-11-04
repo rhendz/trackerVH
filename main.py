@@ -52,6 +52,6 @@ def form():
             fdata['nutrients'] = [x * (0.5 * fdata['amount']) for x in fdata['nutrients']]
 
         print(fdata)
-        add_task(client, fdata['dateTime'], fdata)
+        # add_task(client, fdata['dateTime'], fdata)
 
     return render_template('index.html')
