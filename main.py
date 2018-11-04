@@ -45,11 +45,11 @@ def form():
         }
 
         if (fdata['size'] == 'tablespoon' or fdata['size'] == 'tablespoons'):
-            fdata['nutrients'] = [x * (7.05 * fdata['amount']) for x in fdata['nutrients']]
+            fdata['nutrients'][:] = [x * (7.05 * fdata['amount']) for x in fdata['nutrients'][:]]
         elif (fdata['size'] == 'teaspoon' or fdata['size'] == 'teaspoons'):
-            fdata['nutrients'] = [x * (20 * fdata['amount']) for x in fdata['nutrients']]
+            fdata['nutrients'][:] = [x * (20 * fdata['amount']) for x in fdata['nutrients'][:]]
         else:
-            fdata['nutrients'] = [x * (0.5 * fdata['amount']) for x in fdata['nutrients']]
+            fdata['nutrients'][:] = [x * (0.5 * fdata['amount']) for x in fdata['nutrients'][:]]
 
         print(fdata)
         # add_task(client, fdata['dateTime'], fdata)
