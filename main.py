@@ -8,8 +8,8 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def form():
     if request.method == 'POST':
-        f = request.files['the_file']
-        f = open(f, 'r')
-        print(f.read())
+        f = request.get_json()
+        print(f)
+        return f
     else:
         return render_template('index.html')
