@@ -27,7 +27,9 @@ def add_task(client, fdata):
 @app.route('/', methods=['GET', 'POST'])
 def form():
     if request.method == 'POST':
+        print("hi")
         client = create_client('tracker-221417')
+        print("hi2")
         f = request.get_json()
 
         EDA_REQUEST = 'https://api.edamam.com/api/food-database/parser' + '?app_id=' + APP_ID + '&app_key=' + API_KEY + '&ingr=' + f['food']
