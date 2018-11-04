@@ -1,7 +1,8 @@
 import urllib.request
 from flask import Flask, render_template, request
 
-DEMO_KEY = 'oTJswtPWakxiFh3ov4XalmvKB7a5555wPxqPQeSW'
+APP_ID = '5cf1fbde'
+API_KEY = 'a1e424815db07a8297e670403ca00a9e'
 
 app = Flask(__name__)
 
@@ -11,10 +12,10 @@ def form():
     if request.method == 'POST':
         f = request.get_json()
 
-        URL_USDA_REQUEST = 'https://api.nal.usda.gov/ndb/list?format=json&lt=' + f['food'] + '&sort=1&api_key=' + DEMO_KEY
+        EDA_REQUEST = 'https://api.edamam.com/api/food-database/parser' + '&app_id=' + APP_ID + '&app_key=' + API_KEY + '&ingr=' + f['food']
 
-        usda_data = urllib.request.urlopen(URL_USDA_REQUEST).read()
+        eda_data = urllib.request.urlopen(EDA_REQUEST).read()
 
         print(f)
-        print(usda_data)
+        print(eda_data)
     return render_template('index.html')
