@@ -30,7 +30,7 @@ def form():
         f = request.get_json()
 
         print(f['food'][1])
-        EDA_REQUEST = 'https://api.edamam.com/api/food-database/parser' + '?app_id=' + APP_ID + '&app_key=' + API_KEY + '&ingr=' + f['food'][1]
+        EDA_REQUEST = 'https://api.edamam.com/api/food-database/parser' + '?app_id=' + APP_ID + '&app_key=' + API_KEY + '&ingr=' + f['food'][1:-1]
 
         eda_data = json.loads(urllib.request.urlopen(EDA_REQUEST).read().decode('utf-8'))
 
