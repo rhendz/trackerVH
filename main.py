@@ -11,13 +11,27 @@ app = Flask(__name__)
 def form():
     if request.method == 'POST':
         f = request.get_json()
-        print(f['food'])
 
         EDA_REQUEST = 'https://api.edamam.com/api/food-database/parser' + '?app_id=' + APP_ID + '&app_key=' + API_KEY + '&ingr=' + f['food']
-        print(EDA_REQUEST)
 
         eda_data = urllib.request.urlopen(EDA_REQUEST).read()
 
-        print(f)
-        print(eda_data)
+        fdata = {
+            'dateTime': f['creation'],
+            'food': f['food'],
+            'size': f['size'],
+            'amount': f['amount'],
+            'timing': f['timing'],
+            'nutrients': eda_data['parsed'][0]['food']['nutrients']
+        }
+
+        if (fdata['size'] == 'tablespoon' or fdata['size'] == 'tablespoons'):
+            fdata['nutrients'] = [x * (7.05 * fdata['amount']) for x in fdata['nutrients']]
+        elif (fdata['size'] == 'teaspoon' or fdata['size'] == 'teaspoons'):
+            fdata['nutrients'] = [x * (20 * fdata['amount']) for x in fdata['nutrients']]
+        else:
+            fdata['nutrients'] = [x * (0.5 * fdata['amount']) for x in fdata['nutrients']]
+
+        print(fdata)
+
     return render_template('index.html')
