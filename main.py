@@ -26,12 +26,11 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def form():
     if request.method == 'POST':
-        print("hi")
         # client = create_client('tracker-221417')
-        print("hi2")
         f = request.get_json()
 
-        EDA_REQUEST = 'https://api.edamam.com/api/food-database/parser' + '?app_id=' + APP_ID + '&app_key=' + API_KEY + '&ingr=' + f['food']
+        print(f['food'][1])
+        EDA_REQUEST = 'https://api.edamam.com/api/food-database/parser' + '?app_id=' + APP_ID + '&app_key=' + API_KEY + '&ingr=' + f['food'][1]
 
         eda_data = json.loads(urllib.request.urlopen(EDA_REQUEST).read().decode('utf-8'))
 
