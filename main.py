@@ -8,26 +8,26 @@ API_KEY = 'a1e424815db07a8297e670403ca00a9e'
 app = Flask(__name__)
 
 
-def create_client(project_id):
-    return datastore.Client(project_id)
-
-
-def add_task(client, fdata):
-    key = client.key(fdata['dateTime'])
-
-    task = datastore.Entity(
-        key, exclude_from_indexes=['dateTime'])
-
-    task.update(fdata)
-
-    client.put(task)
+# def create_client(project_id):
+#     return datastore.Client(project_id)
+#
+#
+# def add_task(client, fdata):
+#     key = client.key(fdata['dateTime'])
+#
+#     task = datastore.Entity(
+#         key, exclude_from_indexes=['dateTime'])
+#
+#     task.update(fdata)
+#
+#     client.put(task)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
     if request.method == 'POST':
         print("hi")
-        client = create_client('tracker-221417')
+        # client = create_client('tracker-221417')
         print("hi2")
         f = request.get_json()
 
