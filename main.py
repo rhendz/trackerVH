@@ -44,6 +44,8 @@ def form():
             'nutrients': eda_data['parsed'][0]['food']['nutrients']
         }
 
+        print(fdata)
+
         if (fdata['size'] == 'tablespoon' or fdata['size'] == 'tablespoons'):
             fdata['nutrients']['ENERC_KCAL'] *= 7.05 * fdata['amount']
             fdata['nutrients']['PROCNT'] *= 7.05 * fdata['amount']
