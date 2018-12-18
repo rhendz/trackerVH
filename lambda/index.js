@@ -11,6 +11,8 @@
 'use strict';
 const Alexa = require('alexa-sdk');
 var request = require('request');
+const logik = require('./core/logik.js');
+const edamam = require('./routes/edamam.js');
 const config = require('./config.js');
 
 //=========================================================================================================================================
@@ -25,25 +27,13 @@ const HELP_MESSAGE = '<break time="0.1s"/>! You can give me commands such as <br
 //const HELP_REPROMPT = 'What can I help you with?';
 const STOP_MESSAGE = 'Goodbye!';
 
-function refresh_goal(){
-    //get total calorie goal!
-    request.get(
-        config.HOST_URL,
-        function(error, response, body){
-            if(!error && response.statusCode == 200){
-                calorie_goal = 2000;
-            }
-        }
-    )
-}
-
 //=========================================================================================================================================
 //Event handlers below. (EnterFoodNormal main event)
 //=========================================================================================================================================
 
 const handlers = {
     'LaunchRequest': function () {
-        refresh_goal();
+        logik.refresh_goal();
         this.emit('Entry');
     },
     'Entry': function () {
@@ -70,30 +60,9 @@ const handlers = {
         }
 
         var creation = (new Date).getTime();
-        
-        //post away to backend
-        request.post(
-            config.HOST_URL,
-            { json: 
-                { 
-                    "creation" : creation,
-                    "food" : '\"' + food +'\"',
-                    "size" : '\"' + size +'\"', 
-                    "amount" : parseFloat(amount),
-                    "timing" : '\"' + timing +'\"', 
-                } 
-            },
-            
-            function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    console.log("POSTED");
-                }
-                else{
-                    console.log("error!");
-                    console.log("status code: "+ response.statusCode);
-                }
-            }
-        );
+    
+        //db call
+        //HERE
 
         //get the calculated calories
         var entry_calories = 1614;

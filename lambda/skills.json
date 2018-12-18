@@ -1,0 +1,160 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "tracker",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": [
+                        "Help"
+                    ]
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "EnterFoodNormal",
+                    "slots": [
+                        {
+                            "name": "food",
+                            "type": "AMAZON.Food"
+                        },
+                        {
+                            "name": "amount",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "size",
+                            "type": "Measurements"
+                        },
+                        {
+                            "name": "timing",
+                            "type": "TimeOfDay"
+                        }
+                    ],
+                    "samples": [
+                        "I ate {amount} {size} of {food} for {timing}",
+                        "I ate {amount} {size} of {food}",
+                        "Add a {amount} {size} of {food} for {timing}",
+                        "Enter {amount} {size} of {food} for {timing}",
+                        "Enter {amount} {size} of {food}",
+                        "Add a {size} of {food}",
+                        "Enter a {size} of {food}",
+                        "Add {amount} {size} of {food}",
+                        "Add a {amount} {size} of {food}"
+                    ]
+                },
+                {
+                    "name": "GetDailyBalance",
+                    "slots": [],
+                    "samples": [
+                        "What my total calories are",
+                        "What's my total calorie count",
+                        "What's my total calories",
+                        "What is my total calories",
+                        "What's my total calories for the day",
+                        "What is my total calories for the day",
+                        "What is my total daily calories"
+                    ]
+                },
+                {
+                    "name": "Entry",
+                    "slots": [],
+                    "samples": [
+                        "Hello"
+                    ]
+                },
+                {
+                    "name": "DeleteLast",
+                    "slots": [],
+                    "samples": [
+                        "delete that one",
+                        "delete that one I just said",
+                        "delete the last one",
+                        "delete that last one"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "Measurements",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "quart",
+                                "synonyms": [
+                                    "quarts"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "teaspoon",
+                                "synonyms": [
+                                    "teaspoons"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "tablespoon",
+                                "synonyms": [
+                                    "tablespoons"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "cup",
+                                "synonyms": [
+                                    "cups"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "TimeOfDay",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "lunch"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "snack",
+                                "synonyms": [
+                                    "snacks"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "dinner"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "breakfest"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
