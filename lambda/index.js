@@ -10,9 +10,9 @@
 
 'use strict';
 const Alexa = require('alexa-sdk');
-var request = require('request');
 const logik = require('./core/logik.js');
-const edamam = require('./routes/edamam.js');
+var request = require('request');
+var edamam = require('./routes/edamam.js');
 const config = require('./config.js');
 
 //=========================================================================================================================================
@@ -60,71 +60,49 @@ const handlers = {
         }
 
         var creation = (new Date).getTime();
+
+        var URL_COMPLETE = config.ED_URL + 'ingr=' + food + '&app_id=' + config.ED_APP_ID + '&app_key=' + config.ED_APP_KEY; 
+        request(URL_COMPLETE, { json: true }, (err, res, body) => {
+            if (err) { return console.log(err); }
+            
+            var fdata = edamam.convert_food_data(body, size);
+
+            var calorie_count =  amount * fdata['ENERC_KCAL'];
+            var def_res = "Ok, I've added " + amount + " " + size + " " + food + " " + "and totaled at " + calorie_count + " calories";
+        
+            if(calorie_count > calorie_goal){
+                console.log("over goal warning reached!");
+                this.response.speak(def_res + '<break time="0.5s"/> By the way, you have exceed your total daily calorie goal by ' + (calorie_count-calorie_goal) + ' calories!');
+            }
+            else if(calorie_count == calorie_goal){
+                console.log("equal warning reached!");
+                this.response.speak(def_res + '<break time="0.5s"/> By the way, you have have hit your total daily calorie goal!');
+            }
+            else if(calorie_count >= calorie_goal-500){
+                console.log("500 warning reached!");
+                this.response.speak(def_res +'<break time="0.5s"/> By the way, you are 500 or less calories away from your total daily calorie goal.');
+            }
+            else{
+                //post that shit
+                this.response.speak(def_res);
+            }
+            this.emit(':responseReady');
+        });
     
         //db call
         //HERE
-
-        //get the calculated calories
-        var entry_calories = 1614;
-
-        request.get(
-            config.HOST_URL,
-            function(error, response, body){
-                if(!error && response.statusCode == 200){
-                    console.log("GOT");
-                }
-                else{
-                    console.log("error!");
-                    console.log("status code: "+response.statusCode);
-                }
-            }
-        )
-
-        //conditional responses to the calculated calories
-        //500 calorie warning
-        var def_res = "Ok, I've added " + amount + " " + size + " " + food + " " + "and totaled at " + entry_calories + " calories";
-        
-        if(entry_calories >= calorie_goal-500){
-            console.log("500 warning reached!");
-            this.response.speak(def_res +'<break time="0.5s"/> By the way, you are 500 or less calories away from your total daily calorie goal.');
-        }
-        else if(entry_calories == calorie_goal){
-            console.log("equal warning reached!");
-            this.response.speak(def_res + '<break time="0.5s"/> By the way, you have have hit your total daily calorie goal!');
-        }
-        else if(entry_calories > calorie_goal){
-            console.log("over goal warning reached!");
-            this.response.speak(def_res + '<break time="0.5s"/> By the way, you have exceed your total daily calorie goal by ' + (entry_calories-calorie_goal) + ' calories!');
-        }
-        else{
-            //post that shit
-            this.response.speak(def_res);
-        }
-        this.emit(':responseReady');
     },
     'GetDailyBalance': function () {
         //refresh_goal();
         //get request here to get total daily calories
-        var calories_daily = 100;
+        logik.DB_GetData();
         this.response.speak("Your total calories consumed today is " + calories_daily);
         this.emit(':responseReady');
     },
     'DeleteLast' : function () {
         this.response.speak("Ok, deleting your latest food entry...");
         //delete latest one
-        request.post(
-            'http://httpbin.org/post',
-            { json: { key: 'value' } },
-            function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    this.request.speak("Successfully deleted food entry");
-                }
-                else{
-                    this.request.speak("Uh oh! Something went wrong! Check your connection.");
-                }
-            }
-        );
-
+        logik.DB_PostData();
     },
     'AMAZON.HelpIntent': function () {
         const speechOutput = HELP_MESSAGE;

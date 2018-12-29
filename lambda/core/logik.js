@@ -38,5 +38,13 @@ module.exports = {
                 }
             }
         );
+    },
+
+    DB_GetData: function() {
+        URL = config.HOST_URL;
+        request(URL, (err, res, body) => {
+            if (err) { return console.log(err); }
+            return callback(body);
+        });
     }
 };
