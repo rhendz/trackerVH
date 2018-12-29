@@ -23,7 +23,7 @@ const config = require('./config.js');
 //Make sure to enclose your value in quotes, like this: const APP_ID = 'amzn1.ask.skill.bb4045e6-b3e8-4133-b650-72923c5980f1';
 const APP_ID = config.APP_ID;
 var calorie_goal = 2000;
-const HELP_MESSAGE = '<break time="0.1s"/>! You can give me commands such as <break time="0.2s"/>: "add three cups of butter" or <break time="0.1s"/> "what\'s my total calories?" Try it!';
+const HELP_MESSAGE = '<break time="0.1s"/>You can give me commands such as <break time="0.2s"/>: "add three cups of butter" or <break time="0.1s"/> "what\'s my total calories?" Try it!';
 //const HELP_REPROMPT = 'What can I help you with?';
 const STOP_MESSAGE = 'Goodbye!';
 
@@ -93,16 +93,17 @@ const handlers = {
         //HERE
     },
     'GetDailyBalance': function () {
+        //uncomment when DB code is established
         //refresh_goal();
         //get request here to get total daily calories
-        logik.DB_GetData();
+        //logik.DB_GetData();
         this.response.speak("Your total calories consumed today is " + calories_daily);
         this.emit(':responseReady');
     },
     'DeleteLast' : function () {
         this.response.speak("Ok, deleting your latest food entry...");
         //delete latest one
-        logik.DB_PostData();
+        //logik.DB_PostData();
     },
     'AMAZON.HelpIntent': function () {
         const speechOutput = HELP_MESSAGE;
