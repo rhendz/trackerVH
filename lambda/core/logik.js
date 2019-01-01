@@ -1,3 +1,4 @@
+var AWS = require('aws-sdk');
 var request = require('request');
 const config = require('../config.js');
 
@@ -14,30 +15,19 @@ module.exports = {
         )
     },
 
-    DB_PostData: function(){
-        //post away to backend
-        request.post(
-            config.HOST_URL,
-            { json: 
-                { 
-                    "creation" : creation,
-                    "food" : '\"' + food +'\"',
-                    "size" : '\"' + size +'\"', 
-                    "amount" : parseFloat(amount),
-                    "timing" : '\"' + timing +'\"', 
-                } 
-            },
-            
-            function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    console.log("POSTED");
-                }
-                else{
-                    console.log("error!");
-                    console.log("status code: "+ response.statusCode);
-                }
-            }
-        );
+    DB_PostData: function(foodData) {
+        // Get connection to dynamo db
+        var ddb = new AWS.DynamoDB();
+
+        // post away to backend
+        var params = {
+          TableName: 'FoodRecords',
+          Item: foodData,
+        };
+
+        ddb.putItem(params, function(err, data) {
+          if (err) console.log(err, err.stack); // an error occurred
+        });
     },
 
     DB_GetData: function() {
