@@ -3,30 +3,43 @@ var request = require('request');
 const config = require('../config.js');
 
 module.exports = {
-    refresh_goal: function(){
-        //get total calorie goal!
-        request.get(
-            config.HOST_URL,
-            function(error, response, body){
-                if(!error && response.statusCode == 200){
-                    calorie_goal = 2000;
-                }
-            }
-        )
-    },
-
-    DB_PostData: function(foodData) {
+    DB_PostData: function(foodData, default_calorie_goal) {
         // Get connection to dynamo db
-        var ddb = new AWS.DynamoDB();
+        var ddb = new AWS.DynamoDB.DocumentClient();
 
-        // post away to backend
-        var params = {
-          TableName: 'FoodRecords',
-          Item: foodData,
+        // Adds a new user if not in Users
+        var userDataParams = {
+          TableName : 'Users',
+          Key : {
+            "userId" : foodData.userId
+          }
         };
 
-        ddb.putItem(params, function(err, data) {
-          if (err) console.log(err, err.stack); // an error occurred
+        ddb.get(userDataParams, function(err, data) {
+          if (data.Item == null) { // Unable to find userId in Users
+            userDataParams = {
+              TableName : "Users",
+              Item : {
+                "userId" : foodData.userId,
+                "dailyCalorieGoal" : default_calorie_goal
+              }
+            };
+
+            // Add the new user
+            ddb.put(userDataParams, function(err, data) {
+              if (err) console.log("userData: " + err, err.stack); // an error occurred
+            });
+          }
+        });
+
+        // Post to DynamoDB
+        var foodDataParams = {
+          TableName : "FoodRecords",
+          Item : foodData,
+        };
+
+        ddb.put(foodDataParams, function(err, data) {
+          if (err) console.log("foodData: " + err, err.stack); // an error occurred
         });
     },
 
