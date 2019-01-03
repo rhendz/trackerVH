@@ -46,6 +46,11 @@
 .theme-pink .navbar {
   background-color: #E91E63; }
 
+a.navbar-brand{
+  border-radius: 30px;
+  font-weight: bold;
+}
+
 .theme-pink .navbar-brand {
   color: #fff; }
   .theme-pink .navbar-brand:hover {
